@@ -137,7 +137,7 @@ class User {
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if (!$user) {
-        return json_encode(['message' => "This account doesn't exist"]);
+        return json_encode(['message' => "This account doesn't exist."]);
       }
 
       if (password_verify(htmlspecialchars($password), $user['password'])) {
@@ -145,10 +145,13 @@ class User {
 
         $_SESSION['user'] = $user;
 
-        return json_encode(['message' => 'The user has successfully been logged in']);
+        return json_encode([
+          'message' => 'The user has successfully been logged in.', 
+          'success' => true
+        ]);
       }
 
-      return json_encode(['message' => "The password doesn't match"]);
+      return json_encode(['message' => "The password doesn't match."]);
     } catch (Exception $e) {
       return json_encode(['message' => $e->getMessage()]);
     }

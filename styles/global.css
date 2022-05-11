@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  height: 100vh;
+}
+
+.input {
+  @apply p-4 border-2 transition-[border-color] duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500;
+}
+
+.button {
+  @apply p-4 bg-blue-500 rounded-md text-xl text-white disabled:bg-blue-300;
+}
+
+.error-message {
+  @apply text-red-600;
+}
+
+.success-message {
+  @apply text-green-600;
+}
