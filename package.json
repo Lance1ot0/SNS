@@ -1,0 +1,17 @@
+{
+  "name": "sns",
+  "description": "",
+  "version": "1.0.0",
+  "devDependencies": {
+    "tailwindcss": "^3.0.24"
+  },
+  "scripts": {
+    "start": "concurrently \"npm:php\" \"npm:watch:css\"",
+    "php": "php -S localhost:3000",
+    "watch:css": "npx tailwindcss -i ./styles/global.css -o ./dist/global.css --watch"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
+}
