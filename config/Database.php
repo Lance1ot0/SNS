@@ -1,7 +1,7 @@
 <?php
 class Database {
 
-  private $host = '159.223.164.94';
+  private $host = 'localhost';
   private $dbname = 'sns';
   private $username = 'sns';
   private $password = 'sns123';
@@ -16,7 +16,7 @@ class Database {
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     } catch (PDOException $e) {
-      echo "Connection Error: $e->getMessage()";
+      echo "Connection Error: $e";
     }
 
     return $this->conn;

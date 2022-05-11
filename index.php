@@ -11,3 +11,5 @@ $database = new Database();
 $db = $database->connect();
 
 $user = new User($db);
+
+echo phpinfo();
