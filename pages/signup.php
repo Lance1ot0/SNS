@@ -19,7 +19,7 @@ include '../partials/header.php';
             <button type="submit" class="button w-full mt-10">Sign Up</button>
         </form>
     </div>
-    <p class="mt-10">Already have an account ? <a href="#" class="text-blue-500">Log in</a></p>
+    <p class="mt-10">Already have an account ? <a href="login.php" class="text-blue-500">Log in</a></p>
 </div>
 
 <script>
