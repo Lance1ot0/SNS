@@ -1,6 +1,6 @@
 module.exports = {
   mode: 'jit',
-  content: ['./pages/**/*.php'],
+  content: ['./pages/**/*.php', './shared/**/*.php'],
   theme: {
     extend: {},
   },
