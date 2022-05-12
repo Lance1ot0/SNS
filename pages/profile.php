@@ -51,7 +51,6 @@ if (isset($_SESSION['user'])) {
     $is_owner = true;
   }
 }
-
 ?>
 
 <div class="w-full min-h-full py-20 bg-blue-100 flex justify-center items-center">
@@ -61,9 +60,12 @@ if (isset($_SESSION['user'])) {
     <header class="w-full bg-white rounded-lg">
       <div class="h-60 rounded-lg bg-blue-500"></div>
       <div class="flex px-10 pt-4">
-        <div class="-mt-16">
-          <div class="w-28 h-28 border-solid border-4 border-white bg-black rounded-full"></div>
-        </div>
+        <label for="profile-picture" class="-mt-16">
+          <div style="background-image: url(<?= $user->get_profile_picture($user_id) ?>);"
+            class="<?= $is_owner ? 'cursor-pointer' : '' ?> w-28 bg-gray-400 h-28 border-solid border-4 bg-cover border-white rounded-full">
+          </div>
+        </label>
+        <input id="profile-picture" type="file" class="hidden">
         <div class="max-w-xl ml-4 pb-8">
           <h3 class="text-xl"><?= $user_data['firstname'] ?> <?= $user_data['lastname'] ?></h3>
           <div>
@@ -99,7 +101,8 @@ if (isset($_SESSION['user'])) {
         <div class="bg-white p-5 rounded-lg">
           <header class="flex gap-5">
             <div>
-              <div class="w-12 h-12 bg-black rounded-full"></div>
+              <div style="background-image: url(<?= $user->get_profile_picture($author['id']) ?>);"
+                class="w-12 h-12 bg-cover bg-gray-400 rounded-full"></div>
             </div>
             <div>
               <h3 class="text-lg"><?= $author['firstname'] ?> <?= $author['lastname'] ?></h3>
@@ -126,9 +129,41 @@ import redirect from '../utils/redirect.js'
 
 const profileFollowButton = document.querySelector('#profile-follow-button')
 const profileUnfollowButton = document.querySelector('#profile-unfollow-button')
+const profilePictureInput = document.querySelector('#profile-picture')
 
 const followingId = <?= $user_id ?>;
 const userId = <?= $_SESSION['user']['id'] ?>
+
+profilePictureInput.addEventListener('click', e => {
+  if (userId !== followingId) {
+    e.preventDefault()
+    return
+  }
+})
+
+profilePictureInput.addEventListener('input', e => {
+  const formData = new FormData()
+  formData.append('file', e.target.files[0])
+  formData.append('userId', userId)
+
+  const handleProfilePicture = async () => {
+    const res = await fetch('/api/uploads/upload.php', {
+      method: 'POST',
+      body: formData
+    })
+
+    const {
+      message,
+      success
+    } = await res.json()
+
+    if (success) {
+      redirect(`/profile?u=${followingId}`)
+    }
+  }
+
+  handleProfilePicture()
+})
 
 if (profileFollowButton) {
   profileFollowButton.addEventListener('click', () => {

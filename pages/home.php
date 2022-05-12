@@ -35,7 +35,8 @@ $posts = array_reverse($posts);
     <form id="create-post-form" action="/api/posts/create.php" method="POST" class="w-full flex flex-col gap-2">
       <div class="flex gap-2">
         <div>
-          <div class="w-12 h-12 bg-black rounded-full"></div>
+          <div style="background-image: url(<?= $user->get_profile_picture($user_data['id']) ?>);"
+            class="bg-cover w-12 h-12 bg-gray-400 rounded-full"></div>
         </div>
         <textarea name="content" type="text" placeholder="Content" class="input w-full"></textarea>
       </div>
@@ -60,8 +61,8 @@ $posts = array_reverse($posts);
     <div class="bg-white p-5 rounded-lg">
       <header class="flex gap-5">
         <a href="/profile?u=<?= $post['author']['id'] ?>" class="group cursor-pointer">
-          <div
-            class="group-hover:border-blue-500 border-transparent border-solid border-2 transition-[border-color] duration-300 w-12 h-12 bg-black rounded-full">
+          <div style="background-image: url(<?= $user->get_profile_picture($post['author']['id']) ?>);"
+            class="group-hover:border-blue-500 bg-cover border-transparent border-solid border-2 transition-[border-color] duration-300 w-12 h-12 bg-gray-400 rounded-full">
           </div>
         </a>
         <div>

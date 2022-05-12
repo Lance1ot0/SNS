@@ -17,7 +17,7 @@ $user->get_all(): Array;
 Get a single user :
 
 ```php
-$user->get_single($id: integer): Object;
+$user->get_single($id: integer): Array($user: Object, $succes: boolean);
 ```
 
 Create a user :
@@ -97,6 +97,12 @@ Check if user is following another user :
 
 ```php
 $user->is_following($id: integer, $following_id: integer): boolean;
+```
+
+Get the user's profile picture :
+
+```php
+$user->get_profile_picture($id: integer): string;
 ```
 
 Check if a user exists :
