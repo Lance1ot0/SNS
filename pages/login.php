@@ -1,3 +1,7 @@
+<?php
+include "../shared/header.php"
+?>
+
 <div class="w-full h-full bg-blue-100 flex justify-center items-center">
   <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
     <h2 class="text-blue-500 text-4xl">Welcome back</h2>
@@ -13,7 +17,7 @@
       <button class="button w-full flex justify-center items-center gap-4">
         <div id="login-form-spin-container" class="hidden">
           <?php
-            include 'shared/spin.php';
+          include 'shared/spin.php';
           ?>
         </div>
         Log in
@@ -23,82 +27,82 @@
 </div>
 
 <script type="module">
-import getFormData from '../utils/getFormData.js'
-import redirect from '../utils/redirect.js'
+  import getFormData from '../utils/getFormData.js'
+  import redirect from '../utils/redirect.js'
 
-const togglePasswordVisibilityElement = document.querySelector('#toggle-password-visibility')
-const loginFormElement = document.querySelector('#login-form')
+  const togglePasswordVisibilityElement = document.querySelector('#toggle-password-visibility')
+  const loginFormElement = document.querySelector('#login-form')
 
-const loginFormSpinContainerElement = document.querySelector('#login-form-spin-container')
+  const loginFormSpinContainerElement = document.querySelector('#login-form-spin-container')
 
-let isVisible = true
+  let isVisible = true
 
-const togglePasswordVisibility = () => {
-  let path = '../images/password-hide.svg'
+  const togglePasswordVisibility = () => {
+    let path = '../images/password-hide.svg'
 
-  if (isVisible) {
-    path = '../images/password-show.svg'
+    if (isVisible) {
+      path = '../images/password-show.svg'
+    }
+
+    togglePasswordVisibilityElement.firstElementChild.src = path
+
+    togglePasswordVisibilityElement.previousElementSibling.type = isVisible ? 'text' : 'password'
+
+    isVisible = !isVisible
   }
 
-  togglePasswordVisibilityElement.firstElementChild.src = path
+  togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisibility)
 
-  togglePasswordVisibilityElement.previousElementSibling.type = isVisible ? 'text' : 'password'
+  loginFormElement.addEventListener('submit', e => {
+    e.preventDefault()
 
-  isVisible = !isVisible
-}
-
-togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisibility)
-
-loginFormElement.addEventListener('submit', e => {
-  e.preventDefault()
-
-  const loginFormMessageElement = document.querySelector('#login-form-message')
-
-  const {
-    email,
-    password
-  } = getFormData(loginFormElement)
-
-  if (!email || !password) {
-    loginFormMessageElement.innerText = 'Please, fill all the fields.'
-    loginFormMessageElement.className = 'error-message'
-
-    return
-  }
-
-  const handleLogin = async () => {
-    loginFormSpinContainerElement.className = ''
-    loginFormSpinContainerElement.parentElement.disabled = true
-
-    const res = await fetch('/api/users/login.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    })
+    const loginFormMessageElement = document.querySelector('#login-form-message')
 
     const {
-      message,
-      success = false
-    } = await res.json()
+      email,
+      password
+    } = getFormData(loginFormElement)
 
-    loginFormSpinContainerElement.className = 'hidden'
-    loginFormSpinContainerElement.parentElement.disabled = false
-
-    loginFormMessageElement.innerText = message
-
-    if (success) {
-      loginFormMessageElement.className = 'success-message'
-      redirect('/')
-    } else {
+    if (!email || !password) {
+      loginFormMessageElement.innerText = 'Please, fill all the fields.'
       loginFormMessageElement.className = 'error-message'
-    }
-  }
 
-  handleLogin()
-})
+      return
+    }
+
+    const handleLogin = async () => {
+      loginFormSpinContainerElement.className = ''
+      loginFormSpinContainerElement.parentElement.disabled = true
+
+      const res = await fetch('/api/users/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      })
+
+      const {
+        message,
+        success = false
+      } = await res.json()
+
+      loginFormSpinContainerElement.className = 'hidden'
+      loginFormSpinContainerElement.parentElement.disabled = false
+
+      loginFormMessageElement.innerText = message
+
+      if (success) {
+        loginFormMessageElement.className = 'success-message'
+        redirect('/')
+      } else {
+        loginFormMessageElement.className = 'error-message'
+      }
+    }
+
+    handleLogin()
+  })
 </script>
