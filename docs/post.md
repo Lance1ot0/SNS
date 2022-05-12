@@ -29,7 +29,7 @@ $post->get_all_from_user($id: integer): Array($posts: Array, $author: Array);
 Create a post :
 
 ```php
-$post->get_all_from_user($id: integer, $content: string);
+$post->create($id: integer, $content: string);
 ```
 
 Check if a post exists :
