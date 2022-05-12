@@ -5,6 +5,7 @@ require_once 'models/User.php';
 require_once 'models/Post.php';
 require_once 'utils/format_date.php';
 require_once 'utils/redirect.php';
+require_once 'utils/is_emoji.php';
 
 $user_data;
 
@@ -23,6 +24,7 @@ $post = new Post($db, $user);
 $posts = $post->get_all();
 
 $posts = array_reverse($posts);
+
 
 ?>
 
@@ -50,6 +52,11 @@ $posts = array_reverse($posts);
   </div>
   <div class="mt-10 flex flex-col gap-10 flex-1 w-1/2 min-w-[512px]">
     <?php foreach ($posts as $post): ?>
+    <?php
+      $content = $post['post']['content'];
+
+      $content_is_an_emoji = is_emoji($content) && grapheme_strlen($content) == 1;      
+    ?>
     <div class="bg-white p-5 rounded-lg">
       <header class="flex gap-5">
         <a href="/profile?u=<?= $post['author']['id'] ?>" class="group cursor-pointer">
@@ -66,7 +73,13 @@ $posts = array_reverse($posts);
         </div>
       </header>
       <p class="mt-5 text-base">
+        <?php if ($content_is_an_emoji): ?>
+        <span class="text-5xl">
+          <?= $post['post']['content'] ?>
+        </span>
+        <?php else: ?>
         <?= $post['post']['content'] ?>
+        <?php endif ?>
       </p>
     </div>
     <?php endforeach ?>
