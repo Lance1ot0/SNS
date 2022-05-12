@@ -39,9 +39,19 @@ $posts = array_reverse($posts);
 
 $is_owner = false;
 
-if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $user_id) {
-  $is_owner = true;
+$is_logged = false;
+
+$is_following = false;
+
+if (isset($_SESSION['user'])) {
+  $is_logged = true;
+  $is_following = $user->is_following($_SESSION['user']['id'], $user_id);
+  
+  if ($_SESSION['user']['id'] == $user_id) {
+    $is_owner = true;
+  }
 }
+
 ?>
 
 <div class="w-full min-h-full py-20 bg-blue-100 flex justify-center items-center">
@@ -74,6 +84,10 @@ if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $user_id) {
         <div class="flex justify-end flex-1">
           <?php if ($is_owner): ?>
           <div>edit</div>
+          <?php elseif ($is_logged && !$is_following): ?>
+          <button id="profile-follow-button" class="button self-start">follow</button>
+          <?php else: ?>
+          <button id="profile-unfollow-button" class="button self-start">unfollow</button>
           <?php endif ?>
         </div>
       </div>
@@ -106,3 +120,70 @@ if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $user_id) {
     </div>
   </div>
 </div>
+
+<script type="module">
+import redirect from '../utils/redirect.js'
+
+const profileFollowButton = document.querySelector('#profile-follow-button')
+const profileUnfollowButton = document.querySelector('#profile-unfollow-button')
+
+const followingId = <?= $user_id ?>;
+const userId = <?= $_SESSION['user']['id'] ?>
+
+if (profileFollowButton) {
+  profileFollowButton.addEventListener('click', () => {
+
+    const handleFollow = async () => {
+      const res = await fetch('/api/users/follow.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          followingId,
+          userId
+        })
+      })
+
+      const {
+        message,
+        success = false
+      } = await res.json()
+
+      if (success) {
+        redirect(`/profile?u=${followingId}`)
+      }
+    }
+
+    handleFollow()
+  })
+} else if (profileUnfollowButton) {
+  profileUnfollowButton.addEventListener('click', () => {
+
+    const handleUnfollow = async () => {
+      const res = await fetch('/api/users/unfollow.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          followingId,
+          userId
+        })
+      })
+
+      const {
+        message,
+        success = false
+      } = await res.json()
+
+      if (success) {
+        redirect(`/profile?u=${followingId}`)
+      }
+
+    }
+
+    handleUnfollow()
+  })
+}
+</script>

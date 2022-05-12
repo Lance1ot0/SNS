@@ -1,5 +1,5 @@
 const redirect = url => {
-  return window.location.pathname = url
+  window.location = url
 }
 
 export default redirect

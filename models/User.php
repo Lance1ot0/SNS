@@ -42,7 +42,7 @@ class User {
     $password,
     $profile_picture,
     $banner,
-    $is_active,
+    $is_active
   ) {
     $query = "INSERT INTO $this->users_table SET
       firstname = :firstname,
@@ -192,7 +192,10 @@ class User {
         ':following_id' => htmlentities($following_id)
       ]);
 
-      return json_encode(['message' => "User $id is now following user $following_id"]);
+      return json_encode([
+        'message' => "User $id is now following user $following_id",
+        'success' => true
+      ]);
     } catch (Exception $e) {
       return json_encode(['message' => $e->getMessage()]);
     };
@@ -306,7 +309,10 @@ class User {
       ':following_id' => $following_id,
     ]);
 
-    return json_encode(['message' => "User $id is now unfollowing user $following_id"]);
+    return json_encode([
+      'message' => "User $id is now unfollowing user $following_id",
+      'success' => true
+    ]);
   }
 
   public function is_existing($id) {

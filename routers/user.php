@@ -1,5 +1,5 @@
 <?php
-$route = "$_SERVER[REQUEST_URI]";
+$route = strtok($_SERVER["REQUEST_URI"], '?');
 
 switch ($route) {
   case '/login':
