@@ -62,10 +62,12 @@ class User {
         ':lastname' => htmlentities($lastname),
         ':email' => htmlentities($email),
         ':password' => password_hash(htmlspecialchars($password), PASSWORD_BCRYPT, ['cost' => 12]),
-        ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : $profile_picture,
+        ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : 'https://ui-avatars.com/api/?name=' . htmlentities($firstname) . '+' . htmlentities($lastname),
         ':banner' => $banner != null ? htmlentities($banner) : $banner,
         ':is_active' => htmlentities($is_active)
       ]);
+
+      $this->login($email, $password);
 
       return json_encode([
         'message' => 'The user has successfully been created',
@@ -109,7 +111,7 @@ class User {
       profile_picture = :profile_picture,
       banner = :banner,
       is_active = :is_active
-    WHERE id = $id";
+    WHERE id = :id";
 
     $stmt = $this->conn->prepare($query);
 
@@ -118,10 +120,11 @@ class User {
         ':firstname' => htmlentities($firstname),
         ':lastname' => htmlentities($lastname),
         ':email' => htmlentities($email),
-        ':password' => password_hash(htmlspecialchars($password), PASSWORD_DEFAULT, ['cost' => 12]),
-        ':profile_picture' => htmlentities($profile_picture),
-        ':banner' => htmlentities($banner),
-        ':is_active' => htmlentities($is_active)
+        ':password' => $password,
+        ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : $profile_picture,
+        ':banner' => $banner,
+        ':is_active' => $banner != null ? htmlentities($banner) : $banner,
+        ':id' => $id
       ]);
 
       return json_encode(['message' => 'The user has successfully been updated']);
@@ -313,6 +316,28 @@ class User {
       'message' => "User $id is now unfollowing user $following_id",
       'success' => true
     ]);
+  }
+
+  public function get_profile_picture($id) {
+    ['user_exists' => $user_exists] = $this->is_existing($id);
+
+    if (!$user_exists) {
+      return json_encode(['message' => "The user doesn't exist."]);
+    }
+    
+    $query = "SELECT profile_picture FROM $this->users_table WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->execute([
+      ':id' => $id,
+    ]);
+
+    $profile_picture = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $profile_picture = $profile_picture['profile_picture'];
+
+    return !str_contains($profile_picture, 'ui-avatars.com') ? "uploads/users/$profile_picture" : $profile_picture;
   }
 
   public function is_existing($id) {
