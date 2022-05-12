@@ -32,6 +32,12 @@ Create a post :
 $post->create($id: integer, $content: string);
 ```
 
+Delete a post :
+
+```php
+$post->delete($id: integer);
+```
+
 Check if a post exists :
 
 ```php
