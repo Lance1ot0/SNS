@@ -101,7 +101,8 @@ if (isset($_SESSION['user'])) {
         <div class="bg-white p-5 rounded-lg">
           <header class="flex gap-5">
             <div>
-              <div class="w-12 h-12 bg-black rounded-full"></div>
+              <div style="background-image: url(<?= $user->get_profile_picture($author['id']) ?>);"
+                class="w-12 h-12 bg-cover bg-gray-400 rounded-full"></div>
             </div>
             <div>
               <h3 class="text-lg"><?= $author['firstname'] ?> <?= $author['lastname'] ?></h3>
