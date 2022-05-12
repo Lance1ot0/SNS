@@ -94,6 +94,33 @@ class Post {
     }
   }
 
+  public function delete($id) {
+    ['post_exists' => $post_exists, 'stmt' => $stmt] = $this->is_existing($id);
+
+    if (!$post_exists) {
+      return json_encode([
+        'message' => "The post doesn't not exist."
+      ]);
+    }
+
+    $query = "DELETE FROM $this->posts_table WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+    try {
+      $stmt->execute([
+        ':id' => $id
+      ]);
+
+      return json_encode([
+        'message' => 'The post has been successfully deleted.',
+        'success' => true
+      ]);
+    } catch (Exception $e) {
+      return json_encode(['message' => $e->getMessage()]);
+    }
+  }
+
   public function is_existing($id) {
     $query = "SELECT * FROM $this->posts_table WHERE id = :id";
 

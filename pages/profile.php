@@ -98,7 +98,7 @@ if (isset($_SESSION['user'])) {
     <div class="flex gap-10 mt-10">
       <div class="flex flex-col gap-10 flex-1">
         <?php foreach ($posts as $post): ?>
-        <div class="bg-white p-5 rounded-lg">
+        <div id="post-<?= $post['id'] ?>" class="bg-white p-5 rounded-lg">
           <header class="flex gap-5">
             <div>
               <div style="background-image: url(<?= $user->get_profile_picture($author['id']) ?>);"
@@ -109,7 +109,24 @@ if (isset($_SESSION['user'])) {
               <h4 class="text-gray-400 text-sm"><?= format_date($post['published_at']) ?></h4>
             </div>
             <div class="flex-1 flex justify-end">
-              <div>dots</div>
+              <?php 
+                if ($author['id'] == $_SESSION['user']['id']):
+              ?>
+              <div class="relative">
+                <span class="dots">dots</span>
+                <ul class="mt-2 absolute hidden left-0 rounded-lg  overflow-hidden bg-white shadow-sm shadow-slate-300">
+                  <li
+                    class="delete-button px-4 items-center flex gap-2 py-2 hover:bg-gray-50 transition-[background-color] duration-300">
+                    <div class="scale-75 hidden">
+                      <?php
+                        include 'shared/spin.php';
+                      ?>
+                    </div>
+                    <button class="disabled:text-gray-200">delete</button>
+                  </li>
+                </ul>
+              </div>
+              <?php endif ?>
             </div>
           </header>
           <p class="mt-5 text-base">
@@ -133,6 +150,57 @@ const profilePictureInput = document.querySelector('#profile-picture')
 
 const followingId = <?= $user_id ?>;
 const userId = <?= $_SESSION['user']['id'] ?>
+
+const dotsElements = [...document.querySelectorAll('.dots')]
+
+dotsElements.forEach(dotsElement => {
+  let isDotsOpened = false
+
+  dotsElement.addEventListener('click', e => {
+    const dotsMenu = dotsElement.nextElementSibling
+
+    if (isDotsOpened) {
+      dotsMenu.classList.add('hidden')
+    } else {
+      dotsMenu.classList.remove('hidden')
+    }
+
+    isDotsOpened = !isDotsOpened
+    const postId = e.target.parentElement.parentElement.parentElement.parentElement
+      .id.split('-')[
+        1]
+
+
+    const deleteButton = dotsMenu.querySelector('.delete-button')
+
+    const handleDelete = async () => {
+      deleteButton.firstElementChild.classList.remove('hidden')
+      deleteButton.lastElementChild.disabled = true
+
+      const res = await fetch('/api/posts/delete.php', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: postId
+        })
+      })
+
+      const {
+        message,
+        success
+      } = await res.json()
+
+      deleteButton.firstElementChild.classList.add('hidden')
+      deleteButton.lastElementChild.disabled = false
+
+      if (success) {
+        redirect(`/profile?u=${followingId}`)
+      }
+    }
+
+    deleteButton.addEventListener('click', handleDelete)
+
+  })
+})
 
 profilePictureInput.addEventListener('click', e => {
   if (userId !== followingId) {
