@@ -9,7 +9,12 @@ $user = new User($db);
 
 $body = json_decode(file_get_contents('php://input'));
 
-echo $user->login(
+echo $user->create(
+  $body->firstname, 
+  $body->lastname, 
   $body->email, 
-  $body->password
+  $body->password,
+  null,
+  null,
+  true
 );

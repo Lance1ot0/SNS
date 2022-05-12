@@ -26,7 +26,10 @@ class User {
     if ($user_exists) {
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      return json_encode($user);
+      return [
+        'user' => $user,
+        'success' => true
+      ];
     } else {
       return json_encode(["message" => "The user doesn't exist"]);
     }
@@ -59,12 +62,15 @@ class User {
         ':lastname' => htmlentities($lastname),
         ':email' => htmlentities($email),
         ':password' => password_hash(htmlspecialchars($password), PASSWORD_BCRYPT, ['cost' => 12]),
-        ':profile_picture' => htmlentities($profile_picture),
-        ':banner' => htmlentities($banner),
+        ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : $profile_picture,
+        ':banner' => $banner != null ? htmlentities($banner) : $banner,
         ':is_active' => htmlentities($is_active)
       ]);
 
-      return json_encode(['message' => 'The user has successfully been created']);
+      return json_encode([
+        'message' => 'The user has successfully been created',
+        'success' => true
+      ]);
     } catch (Exception $e) {
       return json_encode(['message' => $e->getMessage()]);
     }
@@ -158,9 +164,9 @@ class User {
   }
 
   public function logout() {
+    session_start();
+    session_unset();
     session_destroy();
-
-    $_SESSION['user'] = null;
 
     return json_encode(['message' => 'The user has successfully been logged out']);
   }
@@ -198,7 +204,7 @@ class User {
     ['user_exists' => $user_exists] = $this->is_existing($id);
 
     if (!$user_exists) {
-      return json_encode(['message' => "The user doesn't exist"]);
+      return json_encode(['message' => "The user doesn't exist."]);
     }
 
     $query = "SELECT following_id FROM $this->followings_users_table WHERE user_id = :id";
@@ -225,7 +231,7 @@ class User {
       array_push($followings, $user);
     };
 
-    return json_encode($followings);
+    return $followings;
   }
 
   public function get_followers($id) {
@@ -233,7 +239,7 @@ class User {
     ['user_exists' => $user_exists] = $this->is_existing($id);
 
     if (!$user_exists) {
-      return json_encode(['message' => "The user doesn't exist"]);
+      return json_encode(['message' => "The user doesn't exist."]);
     }
 
     $query = "SELECT user_id FROM $this->followings_users_table WHERE following_id = :id";
@@ -260,7 +266,7 @@ class User {
       array_push($followers, $user);
     };
 
-    return json_encode($followers);
+    return $followers;
   }
 
   public function is_following($id, $following_id) {

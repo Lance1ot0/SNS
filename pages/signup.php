@@ -1,57 +1,111 @@
-<?php
-
-include '../partials/header.php';
-
-?>
-
 <div class="w-full h-full bg-blue-100 flex flex-col justify-center items-center">
-    <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
-        <h2 class="text-blue-500 text-4xl">Welcome</h2>
-        <form action="" method="post" class="w-full flex flex-col gap-5 mt-10">
-            <input type="text" placeholder="Name" class="input w-full">
-            <input type="email" placeholder="Email" class="input w-full">
-            <div class="flex items-center w-full relative">
-                <input type="password" placeholder="Password" class="input w-full">
-                <div id="toggle-password-visibility" class="absolute right-0 mr-5 cursor-pointer">
-                    <img src="../images/password-hide.svg" alt="password visibility">
-                </div>
-            </div>
-            <button type="submit" class="button w-full mt-10">Sign Up</button>
-        </form>
-    </div>
-    <p class="mt-10">Already have an account ? <a href="login.php" class="text-blue-500">Log in</a></p>
+  <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
+    <h2 class="text-blue-500 text-4xl">Welcome</h2>
+    <form id="signup-form" action="/api/users/create.php" method="POST" class="w-full flex flex-col gap-5 mt-10">
+      <input name="firstname" type="text" placeholder="First name" class="input w-full">
+      <input name="lastname" type="text" placeholder="Last name" class="input w-full">
+      <input name="email" type="email" placeholder="Email" class="input w-full">
+      <div class="flex items-center w-full relative">
+        <input name="password" type="password" placeholder="Password" class="input w-full">
+        <div id="toggle-password-visibility" class="absolute right-0 mr-5 cursor-pointer">
+          <img src="../images/password-hide.svg" alt="password visibility">
+        </div>
+      </div>
+      <span id="signup-form-message"></span>
+      <button type="submit" class="button w-full flex justify-center items-center gap-4">
+        <div id="signup-form-spin-container" class="hidden">
+          <?php
+            include 'shared/spin.php';
+          ?>
+        </div>
+        Sign up
+      </button>
+    </form>
+  </div>
+  <p class="mt-10">Already have an account ? <a href="/login" class="text-blue-500 hover:underline">Log in</a></p>
 </div>
 
-<script>
+<script type="module">
+import getFormData from '../utils/getFormData.js'
+import redirect from '../utils/redirect.js'
+
 const togglePasswordVisibilityElement = document.querySelector('#toggle-password-visibility')
-const formElement = document.querySelector('#login-form')
+const signupFormElement = document.querySelector('#signup-form')
+
+const signupFormSpinContainerElement = document.querySelector('#signup-form-spin-container')
 
 let isVisible = false
 
-const togglePasswordVisible = () => {
+const togglePasswordVisibility = () => {
   let path = '../images/password-hide.svg'
-  
+
   if (isVisible) {
     path = '../images/password-show.svg'
   }
-  
+
   togglePasswordVisibilityElement.firstElementChild.src = path
 
   togglePasswordVisibilityElement.previousElementSibling.type = isVisible ? 'text' : 'password'
-  
+
   isVisible = !isVisible
 }
 
-togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisible)
+togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisibility)
 
-formElement.addEventListener('submit', e => {
+signupFormElement.addEventListener('submit', e => {
   e.preventDefault()
+
+  const signupFormMessageElement = document.querySelector('#signup-form-message')
+
+  const {
+    firstname,
+    lastname,
+    email,
+    password
+  } = getFormData(signupFormElement)
+
+  if (!firstname || !lastname || !email || !password) {
+    signupFormMessageElement.innerText = 'Please, fill all the fields.'
+    signupFormMessageElement.className = 'error-message'
+
+    return
+  }
+
+  const handleSignup = async () => {
+    signupFormSpinContainerElement.className = ''
+    signupFormSpinContainerElement.parentElement.disabled = true
+
+    const res = await fetch('/api/users/create.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstname,
+        lastname,
+        email,
+        password,
+      })
+    })
+
+    const {
+      message,
+      success = false
+    } = await res.json()
+
+    signupFormSpinContainerElement.className = 'hidden'
+    signupFormSpinContainerElement.parentElement.disabled = false
+
+    signupFormMessageElement.innerText = message
+
+    if (success) {
+      signupFormMessageElement.className = 'success-message'
+      redirect('/')
+    } else {
+      signupFormMessageElement.className = 'error-message'
+    }
+  }
+
+  handleSignup()
 })
 </script>
-
-
-<?php
-
-include '../partials/footer.php'
-
-?>

@@ -1,14 +1,10 @@
 <?php
-require_once 'config/Database.php';
-require_once 'models/User.php';
+session_start();
 
-require_once 'routers/user.php';
+include 'shared/header.php';
 
-date_default_timezone_set('Europe/Paris');
+include 'routers/user.php';
 
-$database = new Database();
-$db = $database->connect();
+include 'routers/home.php';
 
-$user = new User($db);
-
-echo phpinfo();
+include 'shared/footer.php';

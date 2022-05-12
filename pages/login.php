@@ -1,13 +1,7 @@
-<?php
-
-include '../shared/header.php'
-
-?>
-
 <div class="w-full h-full bg-blue-100 flex justify-center items-center">
   <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
     <h2 class="text-blue-500 text-4xl">Welcome back</h2>
-    <form id="login-form" action="/login" method="POST" class="w-full flex flex-col gap-5 mt-10">
+    <form id="login-form" action="/api/users/login.php" method="POST" class="w-full flex flex-col gap-5 mt-10">
       <input name="email" type="email" placeholder="Email" class="input w-full">
       <div class="flex items-center w-full relative">
         <input name="password" type="password" placeholder="Password" class="input w-full">
@@ -19,7 +13,7 @@ include '../shared/header.php'
       <button class="button w-full flex justify-center items-center gap-4">
         <div id="login-form-spin-container" class="hidden">
           <?php
-            include '../shared/spin.php';
+            include 'shared/spin.php';
           ?>
         </div>
         Log in
@@ -39,28 +33,31 @@ const loginFormSpinContainerElement = document.querySelector('#login-form-spin-c
 
 let isVisible = true
 
-const togglePasswordVisible = () => {
+const togglePasswordVisibility = () => {
   let path = '../images/password-hide.svg'
-  
+
   if (isVisible) {
     path = '../images/password-show.svg'
   }
-  
+
   togglePasswordVisibilityElement.firstElementChild.src = path
 
   togglePasswordVisibilityElement.previousElementSibling.type = isVisible ? 'text' : 'password'
-  
+
   isVisible = !isVisible
 }
 
-togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisible)
+togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisibility)
 
 loginFormElement.addEventListener('submit', e => {
   e.preventDefault()
 
   const loginFormMessageElement = document.querySelector('#login-form-message')
 
-  const { email, password } = getFormData(loginFormElement)
+  const {
+    email,
+    password
+  } = getFormData(loginFormElement)
 
   if (!email || !password) {
     loginFormMessageElement.innerText = 'Please, fill all the fields.'
@@ -68,7 +65,7 @@ loginFormElement.addEventListener('submit', e => {
 
     return
   }
-  
+
   const handleLogin = async () => {
     loginFormSpinContainerElement.className = ''
     loginFormSpinContainerElement.parentElement.disabled = true
@@ -84,7 +81,10 @@ loginFormElement.addEventListener('submit', e => {
       })
     })
 
-    const { message, success = false } = await res.json()
+    const {
+      message,
+      success = false
+    } = await res.json()
 
     loginFormSpinContainerElement.className = 'hidden'
     loginFormSpinContainerElement.parentElement.disabled = false
@@ -93,7 +93,7 @@ loginFormElement.addEventListener('submit', e => {
 
     if (success) {
       loginFormMessageElement.className = 'success-message'
-      redirect('/pages/home.php')
+      redirect('/')
     } else {
       loginFormMessageElement.className = 'error-message'
     }
@@ -102,9 +102,3 @@ loginFormElement.addEventListener('submit', e => {
   handleLogin()
 })
 </script>
-
-<?php
-
-include '../shared/footer.php'
-
-?>
