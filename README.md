@@ -1,24 +1,23 @@
 # SNS
 
-## Explications
+## Explanation
 
-### 1. Pourquoi
+### 1. Why
 
-Vous avez été missionné(e) pour réaliser un nouveau réseau social adapté aux écoles. Ce réseau social a pour but de fédérer les étudiant(e)s de l'école autour de publications, que ce soit des contenus pédagogiques ou des échanges entre promotions. Inspiré du réseau social Facebook, votre réseau devra disposer de toutes les fonctionnalités usuelles : pouvoir publier, réagir à des publications, créer des espaces communautaires, échanger par messagerie instantanée...
+You have been assigned to create a new social network adapted to schools. This social network aims to federate the school's students around publications, whether educational content or exchanges between classes. Inspired by the Facebook social network, your network will have to have all the usual functionalities: be able to publish, react to publications, create community spaces, exchange by instant messaging...
 
-### 2. Contraintes imposées
+### 2. Imposed constraints
 
-- Les seuls languages autorisés pour ce projet sont HTML, CSS et JavaScript côté front, ainsi que PHP et SQL côté back
-- Les frameworks PHP ne sont pas autorisés
+- The only languages allowed for this project are HTML, CSS and JavaScript on the front side, and PHP and SQL on the back side
+- PHP frameworks are not allowed
 
 <br>
 
-## Technologies utilisées
+## Technologies used
 
 ### 1. Front
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
 ### 2. Back
@@ -26,7 +25,7 @@ Vous avez été missionné(e) pour réaliser un nouveau réseau social adapté a
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 
-### 3. Outils
+### 3. Tools
 
 ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
@@ -34,7 +33,7 @@ Vous avez été missionné(e) pour réaliser un nouveau réseau social adapté a
 
 <br>
 
-## Membres de l'équipe
+## Team Members
 
 - [Lancelot BOYER](https://github.com/Lance1ot0)
 - [Baptiste DAUPHOUY](https://github.com/baptistedph)
