@@ -65,7 +65,7 @@ if (isset($_SESSION['user'])) {
             class="<?= $is_owner ? 'cursor-pointer' : '' ?> w-28 bg-gray-400 h-28 border-solid border-4 bg-cover border-white rounded-full">
           </div>
         </label>
-        <input id="profile-picture" type="file" class="hidden">
+        <input id="profile-picture" type="file" class="hidden" accept="image/*">
         <div class="max-w-xl ml-4 pb-8">
           <h3 class="text-xl"><?= $user_data['firstname'] ?> <?= $user_data['lastname'] ?></h3>
           <div>
@@ -111,7 +111,7 @@ if (isset($_SESSION['user'])) {
         </div>
         <div class="flex flex-col gap-1">
           <label for="profile-edit-lastname">Bio</label>
-          <textarea name="bio" id="profile-edit-lastname" type="text" class="input"></textarea>
+          <textarea name="bio" id="profile-edit-lastname" type="text" class="input"><?= $user_data['bio'] ?></textarea>
         </div>
         <button class="button">Save</button>
       </form>
