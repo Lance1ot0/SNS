@@ -7,16 +7,16 @@ $db = $database->connect();
 
 $user = new User($db);
 
+session_start();
+
+
 $body = json_decode(file_get_contents('php://input'));
 
+['user' => $user_data] = $user->get_single($body->userId);
 
-echo $user->create(
+echo $user->update_profile(
+  $user_data['id'],
   $body->firstname, 
   $body->lastname, 
-  $body->email, 
-  $body->password,
-  null,
-  null,
-  null,
-  true
+  $body->bio
 );

@@ -76,16 +76,13 @@ if (isset($_SESSION['user'])) {
               <h4 class="text-gray-400 text-sm"><span class="text-black"><?= $followers_count ?></span> followers</h4>
             </div>
             <p class="mt-4 text-base">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat inventore velit libero temporibus. Quidem
-              illo exercitationem ratione atque impedit repudiandae, odio aut ab nisi vero eos blanditiis rem iste quod
-              debitis officiis commodi nesciunt quis cupiditate, qui tempore beatae sapiente, vitae ipsam! Dignissimos
-              ipsa libero iusto, velit aut ab quidem!
+              <?= $user_data['bio'] ?>
             </p>
           </div>
         </div>
-        <div class="flex justify-end flex-1">
+        <div class="flex justify-end flex-1 items-start">
           <?php if ($is_owner): ?>
-          <div>edit</div>
+          <button id="profile-edit-open-modal" class="button">edit</button>
           <?php elseif ($is_logged && !$is_following): ?>
           <button id="profile-follow-button" class="button self-start">follow</button>
           <?php else: ?>
@@ -94,6 +91,31 @@ if (isset($_SESSION['user'])) {
         </div>
       </div>
     </header>
+
+    <dialog id="profile-edit-modal" class="min-w-[512px] p-5 rounded-lg">
+      <header class="flex justify-between">
+        <h3 class="text-lg">Edit your profile</h3>
+        <button id="profile-edit-close-modal" class="button">close</button>
+      </header>
+      <form action="/api/uploads/upload.php" id="profile-edit-form" method="PUT"
+        class="flex flex-col w-full gap-4 mt-4">
+        <div class="flex flex-col gap-1">
+          <label for="profile-edit-firstname">Firstname</label>
+          <input value="<?= $user_data['firstname'] ?>" name="firstname" id="profile-edit-firstname" type="text"
+            class="input">
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="profile-edit-lastname">Lastname</label>
+          <input value="<?= $user_data['lastname'] ?>" name="lastname" id="profile-edit-lastname" type="text"
+            class="input">
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="profile-edit-lastname">Bio</label>
+          <textarea name="bio" id="profile-edit-lastname" type="text" class="input"></textarea>
+        </div>
+        <button class="button">Save</button>
+      </form>
+    </dialog>
 
     <div class="flex gap-10 mt-10">
       <div class="flex flex-col gap-10 flex-1">
@@ -142,11 +164,16 @@ if (isset($_SESSION['user'])) {
 </div>
 
 <script type="module">
+import getFormData from '../utils/getFormData.js'
 import redirect from '../utils/redirect.js'
 
+const profileEditOpenModalButton = document.querySelector('#profile-edit-open-modal')
+const profileEditCloseModalButton = document.querySelector('#profile-edit-close-modal')
 const profileFollowButton = document.querySelector('#profile-follow-button')
 const profileUnfollowButton = document.querySelector('#profile-unfollow-button')
 const profilePictureInput = document.querySelector('#profile-picture')
+const profileEditModal = document.querySelector('#profile-edit-modal')
+const profileEditForm = document.querySelector('#profile-edit-form')
 
 const followingId = <?= $user_id ?>;
 const userId = <?= $_SESSION['user']['id'] ?>
@@ -215,7 +242,7 @@ profilePictureInput.addEventListener('input', e => {
   formData.append('userId', userId)
 
   const handleProfilePicture = async () => {
-    const res = await fetch('/api/uploads/upload.php', {
+    const res = await fetch('/api/uploads/profile-picture.php', {
       method: 'POST',
       body: formData
     })
@@ -287,6 +314,53 @@ if (profileFollowButton) {
     }
 
     handleUnfollow()
+  })
+} else if (profileEditOpenModalButton) {
+  profileEditOpenModalButton.addEventListener('click', () => {
+    profileEditModal.showModal()
+  })
+
+  profileEditCloseModalButton.addEventListener('click', () => {
+    profileEditModal.close()
+  })
+
+  profileEditForm.addEventListener('submit', e => {
+    e.preventDefault()
+
+    const {
+      firstname,
+      lastname,
+      bio
+    } = getFormData(profileEditForm)
+
+    const handleUpdate = async () => {
+      const res = await fetch('/api/users/update.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId,
+          firstname,
+          lastname,
+          bio
+        })
+      })
+
+      const {
+        message,
+        success
+      } = await res.json()
+
+      if (success) {
+        redirect(`/profile?u=${followingId}`)
+      }
+
+    }
+
+
+
+    handleUpdate()
   })
 }
 </script>
