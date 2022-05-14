@@ -1,3 +1,7 @@
+<?php
+include '../shared/header.php';
+?>
+
 <div class="w-full h-full bg-blue-100 flex justify-center items-center">
   <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
     <h2 class="text-blue-500 text-4xl">Welcome back</h2>
@@ -13,7 +17,7 @@
       <button class="button w-full flex justify-center items-center gap-4">
         <div id="login-form-spin-container" class="hidden">
           <?php
-            include 'shared/spin.php';
+            include '../shared/spin.php';
           ?>
         </div>
         Log in
