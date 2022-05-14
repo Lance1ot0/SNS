@@ -7,9 +7,9 @@
       <input name="email" type="email" placeholder="Email" class="input w-full">
       <div class="flex items-center w-full relative">
         <input name="password" type="password" placeholder="Password" class="input w-full">
-        <div id="toggle-password-visibility" class="absolute right-0 mr-5 cursor-pointer">
+        <button id="toggle-password-visibility" class="absolute right-0 mr-5 cursor-pointer">
           <img src="../images/password-hide.svg" alt="password visibility">
-        </div>
+        </button>
       </div>
       <span id="signup-form-message"></span>
       <button type="submit" class="button w-full flex justify-center items-center gap-4">
@@ -29,7 +29,7 @@
 import getFormData from '../utils/getFormData.js'
 import redirect from '../utils/redirect.js'
 
-const togglePasswordVisibilityElement = document.querySelector('#toggle-password-visibility')
+const togglePasswordVisibilityButton = document.querySelector('#toggle-password-visibility')
 const signupFormElement = document.querySelector('#signup-form')
 
 const signupFormSpinContainerElement = document.querySelector('#signup-form-spin-container')
@@ -43,14 +43,14 @@ const togglePasswordVisibility = () => {
     path = '../images/password-show.svg'
   }
 
-  togglePasswordVisibilityElement.firstElementChild.src = path
+  togglePasswordVisibilityButton.firstElementChild.src = path
 
-  togglePasswordVisibilityElement.previousElementSibling.type = isVisible ? 'text' : 'password'
+  togglePasswordVisibilityButton.previousElementSibling.type = isVisible ? 'text' : 'password'
 
   isVisible = !isVisible
 }
 
-togglePasswordVisibilityElement.addEventListener('click', togglePasswordVisibility)
+togglePasswordVisibilityButton.addEventListener('click', togglePasswordVisibility)
 
 signupFormElement.addEventListener('submit', e => {
   e.preventDefault()

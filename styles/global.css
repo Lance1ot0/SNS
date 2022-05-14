@@ -7,11 +7,11 @@ body {
 }
 
 .input {
-  @apply p-4 border-2 transition-[border-color] duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500;
+  @apply px-4 py-3 border-2 transition-[border-color] duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500;
 }
 
 .button {
-  @apply p-4 bg-blue-500 rounded-md text-xl text-white disabled:bg-blue-300;
+  @apply px-4 py-3 transition-[background-color] duration-300 hover:bg-blue-400 bg-blue-500 rounded-md text-xl text-white disabled:bg-blue-300;
 }
 
 .error-message {
