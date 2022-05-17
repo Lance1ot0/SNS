@@ -92,7 +92,7 @@ $posts = array_reverse($posts);
           <?php endif ?>
         </div>
       </header>
-      <p class=" mt-5 text-base">
+      <p class="break-all mt-5 text-base">
         <?php if ($content_is_an_emoji): ?>
         <span class="text-5xl">
           <?= $post['post']['content'] ?>
