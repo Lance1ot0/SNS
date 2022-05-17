@@ -28,26 +28,30 @@ $user->create(
   $lastname: string,
   $email: string,
   $password: string,
+  $bio: string,
   $profile_picture: string,
   $banner: string,
   $is_active: boolean
 );
 ```
 
-Update a user :
+Update the user's firstname, lastname & bio:
 
 ```php
-$user->update(
+$user->update_profile(
   $id: integer,
-  $new_user_data: Array(
-    $firstname: string,
-    $lastname: string,
-    $email: string,
-    $password: string,
-    $profile_picture: string,
-    $banner: string,
-    $is_active: boolean
-  )
+  $firstname: string,
+  $lastname: string,
+  $bio: string
+)
+```
+
+Update the user's profile picture:
+
+```php
+$user->update_profile_picture(
+  $id: integer,
+  $profile_picture: string
 )
 ```
 

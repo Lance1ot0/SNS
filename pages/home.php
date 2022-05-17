@@ -25,7 +25,6 @@ $posts = $post->get_all();
 
 $posts = array_reverse($posts);
 
-
 ?>
 
 <div class="w-full py-20 min-h-full bg-blue-100 flex flex-col justify-center items-center">
@@ -35,8 +34,11 @@ $posts = array_reverse($posts);
     <form id="create-post-form" action="/api/posts/create.php" method="POST" class="w-full flex flex-col gap-2">
       <div class="flex gap-2">
         <div>
-          <div style="background-image: url(<?= $user->get_profile_picture($user_data['id']) ?>);"
-            class="bg-cover w-12 h-12 bg-gray-400 rounded-full"></div>
+          <a href="/profile?u=<?= $user_data['id'] ?>" class="group cursor-pointer">
+            <div style="background-image: url(<?= $user->get_profile_picture($user_data['id']) ?>);"
+              class="group-hover:border-blue-500 bg-cover border-transparent border-solid border-2 transition-[border-color] duration-300 w-12 h-12 bg-gray-400 rounded-full">
+            </div>
+          </a>
         </div>
         <textarea name="content" type="text" placeholder="Content" class="input w-full"></textarea>
       </div>

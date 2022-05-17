@@ -26,15 +26,7 @@ if (isset($_POST['userId'])) {
       
       ['user' => $user_data] = $user->get_single($user_id);
       
-      $user->update($user_id, [
-        $user_data['firstname'],
-        $user_data['lastname'],
-        $user_data['email'],
-        $user_data['password'],
-        "$user_id.$ext",
-        null,
-        true
-      ]);
+      $user->update_profile_picture($user_id, "$user_id.$ext");
 
       echo json_encode([
         'message' => 'The file has been successfully uploaded.',

@@ -40,6 +40,7 @@ class User {
     $lastname,
     $email,
     $password,
+    $bio,
     $profile_picture,
     $banner,
     $is_active
@@ -49,6 +50,7 @@ class User {
       lastname = :lastname,
       email = :email,
       password = :password,
+      bio = :bio,
       profile_picture = :profile_picture,
       banner = :banner,
       is_active = :is_active
@@ -62,6 +64,7 @@ class User {
         ':lastname' => htmlentities($lastname),
         ':email' => htmlentities($email),
         ':password' => password_hash(htmlspecialchars($password), PASSWORD_BCRYPT, ['cost' => 12]),
+        ':bio' => $bio != null ? htmlentities($bio) : $bio,
         ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : 'https://ui-avatars.com/api/?name=' . htmlentities($firstname) . '+' . htmlentities($lastname),
         ':banner' => $banner != null ? htmlentities($banner) : $banner,
         ':is_active' => htmlentities($is_active)
@@ -99,35 +102,48 @@ class User {
       return json_encode(['message' => $e->getMessage()]);
     }
   }
-  
-  public function update($id, $new_user_data) {
-    [$firstname, $lastname, $email, $password, $profile_picture, $banner, $is_active] = $new_user_data;
 
-    $query = "UPDATE $this->users_table SET
-      firstname = :firstname,
-      lastname = :lastname,
-      email = :email,
-      password = :password,
-      profile_picture = :profile_picture,
-      banner = :banner,
-      is_active = :is_active
-    WHERE id = :id";
+  public function update_profile_picture($id, $profile_picture) {
+    $query = "UPDATE $this->users_table SET profile_picture = :profile_picture WHERE id = :id";
 
     $stmt = $this->conn->prepare($query);
 
     try {
       $stmt->execute([
-        ':firstname' => htmlentities($firstname),
-        ':lastname' => htmlentities($lastname),
-        ':email' => htmlentities($email),
-        ':password' => $password,
         ':profile_picture' => $profile_picture != null ? htmlentities($profile_picture) : $profile_picture,
-        ':banner' => $banner,
-        ':is_active' => $banner != null ? htmlentities($banner) : $banner,
         ':id' => $id
       ]);
 
-      return json_encode(['message' => 'The user has successfully been updated']);
+      return json_encode([
+        'message' => 'The profile_picture has successfully been updated',
+        'success' => true
+      ]);
+    } catch (Exception $e) {
+      return json_encode(['message' => $e->getMessage()]);
+    }
+  }
+
+  public function update_profile($id, $firstname, $lastname, $bio) {
+    $query = "UPDATE $this->users_table SET
+      firstname = :firstname,
+      lastname = :lastname,
+      bio = :bio
+    WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+     try {
+      $stmt->execute([
+        ':firstname' => htmlentities($firstname),
+        ':lastname' => htmlentities($lastname),
+        ':bio' => $bio != null ? htmlentities($bio) : $bio,
+        ':id' => $id
+      ]);
+
+      return json_encode([
+        'message' => 'The user has successfully been updated',
+        'success' => true
+      ]);
     } catch (Exception $e) {
       return json_encode(['message' => $e->getMessage()]);
     }
