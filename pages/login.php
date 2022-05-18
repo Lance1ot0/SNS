@@ -1,4 +1,4 @@
-<div class="w-full h-full bg-blue-100 flex justify-center items-center">
+<div class="w-full h-full bg-blue-100 flex flex-col justify-center items-center">
   <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
     <h2 class="text-blue-500 text-4xl">Welcome back</h2>
     <form id="login-form" action="/api/users/login.php" method="POST" class="w-full flex flex-col gap-5 mt-10">
@@ -20,6 +20,7 @@
       </button>
     </form>
   </div>
+  <p class="mt-10">Don't have an account ?<a href="/signup" class="text-blue-500 hover:underline ml-1">Register at</a></p>
 </div>
 
 <script type="module">
