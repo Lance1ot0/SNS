@@ -12,7 +12,7 @@
   <?php if (isset($_SESSION['user'])): ?>
       <nav class="hidden h-20 w-full bg-white lg:flex place-items-center justify-between">
 
-        <img src="/images/Shared.svg" alt="" class="ml-24">
+        <img src="/images/shared.svg" alt="" class="ml-24">
 
         <div id="input-search" class="max-w-md">
           <input type="text" class="w-full placeholder:text-slate-400 border border-blue-300 rounded-md focus:outline-none focus:border-blue-500 py-2 pl-2 pr-20 shadow-sm" placeholder="Search" />
