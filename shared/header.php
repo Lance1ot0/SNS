@@ -47,13 +47,13 @@ if (!isset($_SESSION['user'])) {
             Account</a>
         </li>
         <li>
-          <a href="/pages" class="flex gap-3"><img src="../images/page.svg" alt="" /> Pages</a>
+          <a href="/pages" class="flex gap-3"><img src="../images/page.svg" alt="pages" /> Pages</a>
         </li>
         <li>
-          <a href="/groups" class="flex gap-3"><img src="../images/group.svg" alt="" /> Groups</a>
+          <a href="/groups" class="flex gap-3"><img src="../images/group.svg" alt="groups" /> Groups</a>
         </li>
         <li>
-          <a href="/messages" class="flex gap-3"><img src="../images/message.svg" alt="" /> Messages</a>
+          <a href="/messages" class="flex gap-3"><img src="../images/message.svg" alt="messages" /> Messages</a>
         </li>
       </ul>
     </div>
