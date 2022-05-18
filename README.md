@@ -1,10 +1,10 @@
 # SNS
 
-## Explanation
+## Explanations
 
 ### 1. Why
 
-You have been assigned to create a new social network adapted to schools. This social network aims to federate the school's students around publications, whether educational content or exchanges between classes. Inspired by the Facebook social network, your network will have to have all the usual functionalities: be able to publish, react to publications, create community spaces, exchange by instant messaging...
+You have been assigned to create a new social network adapted to schools. This social network aims to federate the school's students around publications, be it educational content or exchanges between classes. Inspired by the Facebook social network, your network will have to have all the usual functionalities: be able to publish, react to publications, create community spaces, exchange by instant messaging...
 
 ### 2. Imposed constraints
 
@@ -33,7 +33,7 @@ You have been assigned to create a new social network adapted to schools. This s
 
 <br>
 
-## Team Members
+## Team members
 
 - [Lancelot BOYER](https://github.com/Lance1ot0)
 - [Baptiste DAUPHOUY](https://github.com/baptistedph)
