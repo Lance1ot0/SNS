@@ -1,4 +1,4 @@
-<div class="w-full h-full bg-blue-100 flex justify-center items-center">
+<div class="w-full h-full bg-blue-100 flex flex-col justify-center items-center">
   <div class="bg-white rounded-lg p-12 w-1/3 min-w-[512px] flex flex-col items-center">
     <h2 class="text-blue-500 text-4xl">Welcome back</h2>
     <form id="login-form" action="/api/users/login.php" method="POST" class="w-full flex flex-col gap-5 mt-10">
@@ -20,6 +20,8 @@
       </button>
     </form>
   </div>
+  <p class="mt-10">Don't have an account ?<a href="/signup" class="text-blue-500 hover:underline ml-1">Register at</a>
+  </p>
 </div>
 
 <script type="module">
@@ -27,9 +29,9 @@ import getFormData from '../utils/getFormData.js'
 import redirect from '../utils/redirect.js'
 
 const togglePasswordVisibilityButton = document.querySelector('#toggle-password-visibility')
-const loginFormElement = document.querySelector('#login-form')
+const loginForm = document.querySelector('#login-form')
 
-const loginFormSpinContainerElement = document.querySelector('#login-form-spin-container')
+const loginFormSpinContainer = document.querySelector('#login-form-spin-container')
 
 let isVisible = true
 
@@ -49,26 +51,26 @@ const togglePasswordVisibility = () => {
 
 togglePasswordVisibilityButton.addEventListener('click', togglePasswordVisibility)
 
-loginFormElement.addEventListener('submit', e => {
+loginForm.addEventListener('submit', e => {
   e.preventDefault()
 
-  const loginFormMessageElement = document.querySelector('#login-form-message')
+  const loginFormMessage = document.querySelector('#login-form-message')
 
   const {
     email,
     password
-  } = getFormData(loginFormElement)
+  } = getFormData(loginForm)
 
   if (!email || !password) {
-    loginFormMessageElement.innerText = 'Please, fill all the fields.'
-    loginFormMessageElement.className = 'error-message'
+    loginFormMessage.innerText = 'Please, fill all the fields.'
+    loginFormMessage.className = 'error-message'
 
     return
   }
 
   const handleLogin = async () => {
-    loginFormSpinContainerElement.className = ''
-    loginFormSpinContainerElement.parentElement.disabled = true
+    loginFormSpinContainer.className = ''
+    loginFormSpinContainer.parentElement.disabled = true
 
     const res = await fetch('/api/users/login.php', {
       method: 'POST',
@@ -86,16 +88,16 @@ loginFormElement.addEventListener('submit', e => {
       success = false
     } = await res.json()
 
-    loginFormSpinContainerElement.className = 'hidden'
-    loginFormSpinContainerElement.parentElement.disabled = false
+    loginFormSpinContainer.className = 'hidden'
+    loginFormSpinContainer.parentElement.disabled = false
 
-    loginFormMessageElement.innerText = message
+    loginFormMessage.innerText = message
 
     if (success) {
-      loginFormMessageElement.className = 'success-message'
+      loginFormMessage.className = 'success-message'
       redirect('/')
     } else {
-      loginFormMessageElement.className = 'error-message'
+      loginFormMessage.className = 'error-message'
     }
   }
 

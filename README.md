@@ -6,7 +6,7 @@
 
 You have been assigned to create a new social network adapted to schools. This social network aims to federate the school's students around publications, be it educational content or exchanges between classes. Inspired by the Facebook social network, your network will have to have all the usual functionalities: be able to publish, react to publications, create community spaces, exchange by instant messaging...
 
-### 2. Contraintes imposées
+### 2. Imposed constraints
 
 - The only languages allowed for this project are HTML, CSS and JavaScript on the front side, and PHP and SQL on the back side
 - PHP frameworks are not allowed
@@ -17,8 +17,7 @@ You have been assigned to create a new social network adapted to schools. This s
 
 ### 1. Front
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
 ### 2. Back

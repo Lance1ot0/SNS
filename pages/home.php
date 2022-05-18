@@ -9,9 +9,7 @@ require_once 'utils/is_emoji.php';
 
 $user_data;
 
-if (!isset($_SESSION['user'])) {
-  redirect('/login');
-} else {
+if (isset($_SESSION['user'])) {
   $user_data = $_SESSION['user'];
 }
 
@@ -28,8 +26,6 @@ $posts = array_reverse($posts);
 ?>
 
 <div class="w-full py-20 min-h-full bg-blue-100 flex flex-col justify-center items-center">
-  <h1 class="text-6xl font-bold">SNS</h1>
-  <a href="/profile?u=<?= $user_data['id'] ?>">go to my profile</a>
   <div class="mt-10 bg-white rounded-lg p-5 w-1/2 min-w-[512px] flex flex-col items-center">
     <form id="create-post-form" action="/api/posts/create.php" method="POST" class="w-full flex flex-col gap-2">
       <div class="flex gap-2">
@@ -40,7 +36,7 @@ $posts = array_reverse($posts);
             </div>
           </a>
         </div>
-        <textarea name="content" type="text" placeholder="Content" class="input w-full"></textarea>
+        <textarea name="content" type="text" placeholder="Content" class="input h-14 w-full focus:h-40"></textarea>
       </div>
       <span id="create-post-form-message"></span>
       <button class="button flex self-end justify-center items-center gap-4">
@@ -76,7 +72,7 @@ $posts = array_reverse($posts);
             if ($post['author']['id'] == $_SESSION['user']['id']):
           ?>
           <div class="relative cursor-pointer">
-            <span class="dots">dots</span>
+            <span class="dots"><img src="/images/more.svg" alt=""></span>
             <ul class="mt-2 hidden absolute left-0 rounded-lg  overflow-hidden bg-white shadow-sm shadow-slate-300">
               <li
                 class="delete-button px-4 items-center flex gap-2 py-2 hover:bg-gray-50 transition-[background-color] duration-300">
@@ -92,7 +88,7 @@ $posts = array_reverse($posts);
           <?php endif ?>
         </div>
       </header>
-      <p class=" mt-5 text-base">
+      <p class="break-all mt-5 text-base">
         <?php if ($content_is_an_emoji): ?>
         <span class="text-5xl">
           <?= $post['post']['content'] ?>
@@ -110,9 +106,9 @@ $posts = array_reverse($posts);
 import getFormData from '../utils/getFormData.js'
 import redirect from '../utils/redirect.js'
 
-const createPostFormElement = document.querySelector('#create-post-form')
+const createPostForm = document.querySelector('#create-post-form')
 
-const createPostFormSpinContainerElement = document.querySelector('#create-post-form-spin-container')
+const createPostFormSpinContainer = document.querySelector('#create-post-form-spin-container')
 
 const dotsElements = [...document.querySelectorAll('.dots')]
 
@@ -162,25 +158,25 @@ dotsElements.forEach(dotsElement => {
   })
 })
 
-createPostFormElement.addEventListener('submit', e => {
+createPostForm.addEventListener('submit', e => {
   e.preventDefault()
 
-  const createPostFormMessageElement = document.querySelector('#create-post-form-message')
+  const createPostFormMessage = document.querySelector('#create-post-form-message')
 
   const {
     content
-  } = getFormData(createPostFormElement)
+  } = getFormData(createPostForm)
 
   if (!content) {
-    createPostFormMessageElement.innerText = 'Please, add some content to your post.'
-    createPostFormMessageElement.className = 'error-message'
+    createPostFormMessage.innerText = 'Please, add some content to your post.'
+    createPostFormMessage.className = 'error-message'
 
     return
   }
 
   const handleCreatePost = async () => {
-    createPostFormSpinContainerElement.className = ''
-    createPostFormSpinContainerElement.parentElement.disabled = true
+    createPostFormSpinContainer.className = ''
+    createPostFormSpinContainer.parentElement.disabled = true
 
     const res = await fetch('/api/posts/create.php', {
       method: 'POST',
@@ -197,16 +193,16 @@ createPostFormElement.addEventListener('submit', e => {
       success = false
     } = await res.json()
 
-    createPostFormSpinContainerElement.className = 'hidden'
-    createPostFormSpinContainerElement.parentElement.disabled = false
+    createPostFormSpinContainer.className = 'hidden'
+    createPostFormSpinContainer.parentElement.disabled = false
 
-    createPostFormMessageElement.innerText = message
+    createPostFormMessage.innerText = message
 
     if (success) {
-      createPostFormMessageElement.className = 'success-message'
+      createPostFormMessage.className = 'success-message'
       redirect('/')
     } else {
-      createPostFormMessageElement.className = 'error-message'
+      createPostFormMessage.className = 'error-message'
     }
   }
 
