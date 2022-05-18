@@ -135,7 +135,7 @@ if (isset($_SESSION['user'])) {
                 if ($author['id'] == $_SESSION['user']['id']):
               ?>
               <div class="relative">
-                <span class="dots">dots</span>
+                <span class="dots"><img src="/images/more.svg" alt=""></span>
                 <ul class="mt-2 absolute hidden left-0 rounded-lg  overflow-hidden bg-white shadow-sm shadow-slate-300">
                   <li
                     class="delete-button px-4 items-center flex gap-2 py-2 hover:bg-gray-50 transition-[background-color] duration-300">
