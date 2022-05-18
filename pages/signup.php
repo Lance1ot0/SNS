@@ -30,9 +30,9 @@ import getFormData from '../utils/getFormData.js'
 import redirect from '../utils/redirect.js'
 
 const togglePasswordVisibilityButton = document.querySelector('#toggle-password-visibility')
-const signupFormElement = document.querySelector('#signup-form')
+const signupForm = document.querySelector('#signup-form')
 
-const signupFormSpinContainerElement = document.querySelector('#signup-form-spin-container')
+const signupFormSpinContainer = document.querySelector('#signup-form-spin-container')
 
 let isVisible = false
 
@@ -52,28 +52,28 @@ const togglePasswordVisibility = () => {
 
 togglePasswordVisibilityButton.addEventListener('click', togglePasswordVisibility)
 
-signupFormElement.addEventListener('submit', e => {
+signupForm.addEventListener('submit', e => {
   e.preventDefault()
 
-  const signupFormMessageElement = document.querySelector('#signup-form-message')
+  const signupFormMessage = document.querySelector('#signup-form-message')
 
   const {
     firstname,
     lastname,
     email,
     password
-  } = getFormData(signupFormElement)
+  } = getFormData(signupForm)
 
   if (!firstname || !lastname || !email || !password) {
-    signupFormMessageElement.innerText = 'Please, fill all the fields.'
-    signupFormMessageElement.className = 'error-message'
+    signupFormMessage.innerText = 'Please, fill all the fields.'
+    signupFormMessage.className = 'error-message'
 
     return
   }
 
   const handleSignup = async () => {
-    signupFormSpinContainerElement.className = ''
-    signupFormSpinContainerElement.parentElement.disabled = true
+    signupFormSpinContainer.className = ''
+    signupFormSpinContainer.parentElement.disabled = true
 
     const res = await fetch('/api/users/create.php', {
       method: 'POST',
@@ -93,16 +93,16 @@ signupFormElement.addEventListener('submit', e => {
       success = false
     } = await res.json()
 
-    signupFormSpinContainerElement.className = 'hidden'
-    signupFormSpinContainerElement.parentElement.disabled = false
+    signupFormSpinContainer.className = 'hidden'
+    signupFormSpinContainer.parentElement.disabled = false
 
-    signupFormMessageElement.innerText = message
+    signupFormMessage.innerText = message
 
     if (success) {
-      signupFormMessageElement.className = 'success-message'
+      signupFormMessage.className = 'success-message'
       redirect('/')
     } else {
-      signupFormMessageElement.className = 'error-message'
+      signupFormMessage.className = 'error-message'
     }
   }
 

@@ -8,4 +8,7 @@ switch ($route) {
   case '/profile':
     include 'pages/profile.php';
     break;
+  case '/messages':
+    include 'pages/messages.php';
+    break;
 }

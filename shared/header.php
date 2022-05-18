@@ -1,3 +1,18 @@
+<?php
+
+require_once 'config/Database.php';
+require_once 'models/User.php';
+
+$user_data;
+
+if (!isset($_SESSION['user'])) {
+  redirect('/login');
+} else {
+  $user_data = $_SESSION['user'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,32 +25,37 @@
 
 <body>
   <?php if (isset($_SESSION['user'])): ?>
-      <nav class="hidden h-20 w-full bg-white lg:flex place-items-center justify-between">
+  <nav class="hidden h-20 w-full bg-white fixed top-0 lg:flex place-items-center justify-between">
 
-        <img src="/images/Shared.svg" alt="" class="ml-24">
+    <a href="/">
+      <img src="/images/shared.svg" alt="" class="ml-24">
+    </a>
 
-        <div id="input-search" class="max-w-md">
-          <input type="text" class="w-full placeholder:text-slate-400 border border-blue-300 rounded-md focus:outline-none focus:border-blue-500 py-2 pl-2 pr-20 shadow-sm" placeholder="Search" />
-        </div>
+    <div class="max-w-md">
+      <input type="text"
+        class="px-4 py-2 border-2 transition-[border-color] duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500"
+        placeholder="Search" />
+    </div>
 
-        <div id="navbar_buttons_container" class="mr-24 text-lg">
-          <ul id="buttons_container" class="flex gap-10">
-            <li>
-              <a href="/" class="flex gap-3"><img src="../images/home.svg" alt="" /> Home</a>
-            </li>
-            <li>
-              <a href="/" class="flex gap-3"><img src="../images/relation.svg" alt="" /> Account</a>
-            </li>
-            <li>
-              <a href="/" class="flex gap-3"><img src="../images/page.svg" alt="" /> Pages</a>
-            </li>
-            <li>
-              <a href="/" class="flex gap-3"><img src="../images/group.svg" alt="" /> Groups</a>
-            </li>
-            <li>
-            <a href="/" class="flex gap-3"><img src="../images/message.svg" alt="" /> Messages</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    <?php endif ?>
+    <div class="mr-24 text-lg">
+      <ul class="flex gap-10">
+        <li>
+          <a href="/" class="flex gap-3"><img src="../images/home.svg" alt="" /> Home</a>
+        </li>
+        <li>
+          <a href="/profile?u=<?= $user_data['id'] ?>" class="flex gap-3"><img src="../images/relation.svg" alt="" />
+            Account</a>
+        </li>
+        <li>
+          <a href="/pages" class="flex gap-3"><img src="../images/page.svg" alt="" /> Pages</a>
+        </li>
+        <li>
+          <a href="/groups" class="flex gap-3"><img src="../images/group.svg" alt="" /> Groups</a>
+        </li>
+        <li>
+          <a href="/messages" class="flex gap-3"><img src="../images/message.svg" alt="" /> Messages</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <?php endif ?>

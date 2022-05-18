@@ -27,21 +27,12 @@ CREATE TABLE `groups` (
   created_at DATETIME
 );
 
-
-CREATE TABLE messages_group (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(50),
-  created_at DATETIME
-);
-
 CREATE TABLE messages (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_from_id INT,
   user_to_id INT,
   content TEXT,
-  group_id INT,
   published_at DATETIME,
-  FOREIGN KEY (group_id) REFERENCES messages_group (id) ON DELETE CASCADE,
   FOREIGN KEY (user_from_id) REFERENCES users (id) ON DELETE NO ACTION,
   FOREIGN KEY (user_to_id) REFERENCES users (id) ON DELETE NO ACTION
 );
@@ -140,14 +131,6 @@ CREATE TABLE groups_users (
   PRIMARY KEY (group_id, user_id),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (group_id) REFERENCES `groups` (id) ON DELETE CASCADE
-);
-
-CREATE TABLE messages_groups_users (
-  messages_group_id INT,
-  user_id INT,
-  PRIMARY KEY (messages_group_id, user_id),
-  FOREIGN KEY (messages_group_id) REFERENCES messages_group (id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE followings_users (

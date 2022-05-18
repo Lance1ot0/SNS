@@ -7,7 +7,7 @@ body {
 }
 
 .input {
-  @apply px-4 py-3 border-2 transition-[border-color] duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500;
+  @apply px-4 py-3 border-2 transition-[border-color,height] resize-none duration-300 focus:border-blue-500 border-blue-300 outline-none rounded-md text-lg placeholder:text-blue-300 text-blue-500;
 }
 
 .button {

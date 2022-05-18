@@ -50,6 +50,8 @@ if (isset($_SESSION['user'])) {
   if ($_SESSION['user']['id'] == $user_id) {
     $is_owner = true;
   }
+} else {
+  return redirect('/login');
 }
 ?>
 
