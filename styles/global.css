@@ -4,6 +4,7 @@
 
 body {
   height: 100vh;
+  @apply bg-blue-50;
 }
 
 .input {

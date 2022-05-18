@@ -246,6 +246,9 @@ profilePictureInput.addEventListener('input', e => {
   const handleProfilePicture = async () => {
     const res = await fetch('/api/uploads/profile-picture.php', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
       body: formData
     })
 

@@ -135,6 +135,9 @@ dotsElements.forEach(dotsElement => {
 
       const res = await fetch('/api/posts/delete.php', {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           id: postId
         })

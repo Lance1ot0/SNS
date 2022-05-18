@@ -2,11 +2,12 @@
 
 require_once 'config/Database.php';
 require_once 'models/User.php';
+require_once 'utils/redirect.php';
 
 $user_data;
 
 if (!isset($_SESSION['user'])) {
-  redirect('/login');
+  // redirect('/login');
 } else {
   $user_data = $_SESSION['user'];
 }
@@ -25,7 +26,7 @@ if (!isset($_SESSION['user'])) {
 
 <body>
   <?php if (isset($_SESSION['user'])): ?>
-  <nav class="hidden h-20 w-full bg-white fixed top-0 lg:flex place-items-center justify-between">
+  <nav class="z-50 hidden h-20 w-full bg-white fixed top-0 lg:flex place-items-center justify-between">
 
     <a href="/">
       <img src="/images/shared.svg" alt="" class="ml-24">
