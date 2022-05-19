@@ -23,7 +23,7 @@ if (isset($_SESSION['user'])) {
 ?>
 
 <div class="mt-32 px-24 flex h-3/4">
-  <aside class="bg-white p-5 rounded-l-lg w-80">
+  <aside class="bg-white p-5 rounded-l-lg w-[400px]">
     <ul id="conversations-container" class="relative h-full w-full">
       <div id="conversations-spin-container"
         class="hidden scale-150 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -43,7 +43,7 @@ if (isset($_SESSION['user'])) {
       </div>
     </ul>
     <form id="send-message-form" action="/api/messages/create.php" method="POST" class="p-10 flex w-full gap-4">
-      <input name="message" placeholder=" Your message" type="text" class="input flex-1">
+      <input name="message" placeholder="Your message" type="text" class="input flex-1">
       <button class="button flex justify-center items-center gap-4">
         <div id="send-button-spin-container" class="hidden">
           <?php
@@ -55,6 +55,10 @@ if (isset($_SESSION['user'])) {
     </form>
   </div>
 </div>
+
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+<script src="https://unpkg.com/dayjs@1.8.21/plugin/calendar.js"></script>
+<script src="https://unpkg.com/dayjs@1.8.21/plugin/utc.js"></script>
 
 <script type="module">
 import getFormData from '../utils/getFormData.js'
@@ -70,6 +74,7 @@ let userToId
 const userFromId = <?= $_SESSION['user']['id'] ?>
 
 let lastConversation = {}
+let users
 
 sendMessageForm.addEventListener('submit', async e => {
   e.preventDefault()
@@ -99,7 +104,7 @@ sendMessageForm.addEventListener('submit', async e => {
   sendButtonSpinContainer.classList.add('hidden')
 })
 
-const renderConversations = (users) => {
+const renderConversations = () => {
   conversationsContainer.innerHTML = ''
   chatContainer.innerHTML = `
 
@@ -114,6 +119,36 @@ const renderConversations = (users) => {
   users.forEach(async ({
     user
   }, i) => {
+    const res = await fetch('/api/messages/get_conversation.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userOneId: userFromId,
+        userTwoId: user.id
+      })
+    })
+
+    const {
+      message,
+      conversation,
+      user_one,
+      user_two,
+      success = false
+    } = await res.json()
+
+    const lastMessage = conversation[conversation.length - 1]
+
+    const getLastMessageTime = (date) => {
+      dayjs.extend(dayjs_plugin_calendar)
+      dayjs.extend(dayjs_plugin_utc)
+
+      const publishedAt = dayjs.utc(date).local()
+
+      return publishedAt.calendar()
+    }
+
     const url = new URLSearchParams(window.location.search)
 
     const profilePicture = !user.profile_picture.includes('ui-avatars.com') ?
@@ -127,11 +162,11 @@ const renderConversations = (users) => {
             <div style="background-image: url(${profilePicture});" class="w-10 h-10 bg-cover bg-gray-400 rounded-full"></div>
           </div>  
           <div class="flex-1">
-            <header class="flex items-center gap-8 justify-between w-full">
-              <h3 class="font-medium text-lg max-w-[140px] whitespace-nowrap text-ellipsis overflow-hidden">${user.firstname} ${user.lastname}</h3>
-              <span class="text-gray-500">1:21</span>
+            <header class="flex items-center gap-2 justify-between w-full">
+              <h3 class="font-medium text-lg max-w-[100px] whitespace-nowrap text-ellipsis overflow-hidden">${user.firstname} ${user.lastname}</h3>
+              <span class="text-gray-500 whitespace-nowrap">${getLastMessageTime(lastMessage.published_at)}</span>
             </header>
-            <p class="text-gray-500 text-ellipsis overflow-hidden">Lorem ipsum ut dolor</p>
+            <p class="text-gray-500 text-ellipsis overflow-hidden">${lastMessage.content}</p>
           </div>
         </a>
       </li>
@@ -153,7 +188,7 @@ const renderConversations = (users) => {
 
       chatSpinContainer.classList.remove('hidden')
 
-      renderConversations(users)
+      renderConversations()
     })
   })
 }
@@ -173,9 +208,11 @@ const getUserConversationUsers = async () => {
 
   const {
     message,
-    users,
+    users: usrs,
     success
   } = await res.json()
+
+  users = usrs
 
   conversationsSpinContainer.classList.add('hidden')
 
@@ -191,7 +228,7 @@ const getUserConversationUsers = async () => {
     chatSpinContainer.classList.remove('hidden')
 
     getConversation()
-    renderConversations(users)
+    renderConversations()
   } else {
     console.log(message)
   }
@@ -264,7 +301,6 @@ const getConversation = async () => {
     console.log(message)
   }
 }
-
 
 setInterval(() => {
   if (userToId) getConversation()

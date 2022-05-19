@@ -118,5 +118,5 @@ class Message {
       return json_encode(['message' => $e->getMessage()]);
     }
   }
-
+ 
 }
