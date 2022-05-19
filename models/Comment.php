@@ -148,4 +148,84 @@ class Comment
             return json_encode(['message' => $e->getMessage()]);
         }
     }
+
+    public function delete($id, $type){
+        
+        if($type === 'comment'){
+            ['comment_exists' => $comment_exists, 'stmt' => $stmt] = $this->is_comment_existing($id);
+    
+            if (!$$comment_exists) {
+                return json_encode([
+                  'message' => "The comment does not exist."
+                ]);
+              }
+    
+            $query = "DELETE FROM $this->comments_table where id = :id";
+
+        }else{
+            ['subcomment_exists' => $subcomment_exists, 'stmt' => $stmt] = $this->is_subcomment_existing($id);
+    
+            if (!$$subcomment_exists) {
+                return json_encode([
+                  'message' => "The comment does not exist."
+                ]);
+              }
+    
+            $query = "DELETE FROM $this->subcomments_table where id = :id";
+
+        }
+
+        $stmt = $this->conn->prepare($query);
+
+        try{
+            $stmt->execute([
+                ':id' => $id
+              ]);
+
+            return json_encode([
+                'message' => 'The comment has been successfully deleted.',
+                'success' => true
+              ]);
+        }catch (Exception $e) {
+            return json_encode(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function is_comment_existing($id){
+        $query = "SELECT * $this->comments_table where id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':id' => $id
+          ]);
+
+        $comment_exists = $stmt->rowCount() == 1;
+
+        return [
+            'comment_exists' => $comment_exists,
+            'stmt' => $stmt
+        ];
+
+
+    }
+
+    public function is_subcomment_existing($id){
+        $query = "SELECT * $this->subcomments_table where id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':id' => $id
+          ]);
+
+        $subcomment_exists = $stmt->rowCount() == 1;
+
+        return [
+            'subcomment_exists' => $subcomment_exists,
+            'stmt' => $stmt
+        ];
+
+
+    }
 }

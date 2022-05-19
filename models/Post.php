@@ -106,7 +106,7 @@ class Post
 
     if (!$post_exists) {
       return json_encode([
-        'message' => "The post doesn't not exist."
+        'message' => "The post does not exist."
       ]);
     }
 

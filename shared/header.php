@@ -56,6 +56,7 @@ if (!isset($_SESSION['user'])) {
         <li>
           <a href="/messages" class="flex gap-3"><img src="../images/message.svg" alt="messages" /> Messages</a>
         </li>
+        <li><a href="/api/users/logout.php" class="button">log out</a></li>
       </ul>
     </div>
   </nav>
