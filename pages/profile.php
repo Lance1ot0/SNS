@@ -57,8 +57,6 @@ if (isset($_SESSION['user'])) {
 
 <div class="w-full min-h-full py-20 bg-blue-100 flex justify-center items-center">
   <div class="w-2/3 min-w-[512px]">
-    <a href="/">back to home</a>
-    <a href="/api/users/logout.php">log out</a>
     <header class="w-full bg-white rounded-lg">
       <div class="h-60 rounded-lg bg-blue-500"></div>
       <div class="flex px-10 pt-4">
@@ -84,7 +82,9 @@ if (isset($_SESSION['user'])) {
         </div>
         <div class="flex justify-end flex-1 items-start">
           <?php if ($is_owner): ?>
-          <button id="profile-edit-open-modal" class="button">edit</button>
+            <div class="flex flex-col gap-y-2">
+              <button id="profile-edit-open-modal" class="button">edit</button>
+            </div>
           <?php elseif ($is_logged && !$is_following): ?>
           <button id="profile-follow-button" class="button self-start">follow</button>
           <?php else: ?>
@@ -136,7 +136,7 @@ if (isset($_SESSION['user'])) {
               <?php 
                 if ($author['id'] == $_SESSION['user']['id']):
               ?>
-              <div class="relative">
+              <div class="relative cursor-pointer">
                 <span class="dots"><img src="/images/more.svg" alt=""></span>
                 <ul class="mt-2 absolute hidden left-0 rounded-lg  overflow-hidden bg-white shadow-sm shadow-slate-300">
                   <li
@@ -248,7 +248,7 @@ profilePictureInput.addEventListener('input', e => {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
       body: formData
     })
 

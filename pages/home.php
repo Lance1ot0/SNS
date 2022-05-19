@@ -97,6 +97,22 @@ $posts = array_reverse($posts);
         <?= $post['post']['content'] ?>
         <?php endif ?>
       </p>
+      <div class="flex items-start mt-10 w-full gap-3">
+        <a href="/profile?u=<?= $user_data['id'] ?>" class="group cursor-pointer">
+            <div style="background-image: url(<?= $user->get_profile_picture($user_data['id']) ?>);"
+              class="group-hover:border-blue-500 bg-cover border-transparent border-solid border-2 transition-[border-color] duration-300 w-12 h-12 bg-gray-400 rounded-full shrink-0">
+            </div>
+          </a>
+        <form id="create-comment-under-post-form" action="" method="POST" class="w-full">
+          <textarea name="content" type="text" placeholder="write a comment" class="input h-14 w-full focus:h-40"></textarea>
+        </form>
+        <div class="">
+          <ul class="flex gap-4">
+            <li class="flex"><img src="/images/heart.svg" alt=""><span>10</span></li>
+            <li class="flex"><img src="/images/message.svg" alt=""><span>10</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
     <?php endforeach ?>
   </div>
